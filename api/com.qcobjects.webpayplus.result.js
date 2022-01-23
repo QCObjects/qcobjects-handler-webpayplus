@@ -95,3 +95,4 @@ Package("com.qcobjects.webpayplus.result", [
     }
   })
 ]);
+Package("qcobjects-handler-webpayplus/api/com.qcobjects.webpayplus.result", Package("com.qcobjects.webpayplus.result"));

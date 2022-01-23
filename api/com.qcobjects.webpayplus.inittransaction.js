@@ -67,3 +67,4 @@ Package("com.qcobjects.webpayplus.inittransaction", [
     }
   })
 ]);
+Package("qcobjects-handler-webpayplus/api/com.qcobjects.webpayplus.inittransaction", Package("com.qcobjects.webpayplus.inittransaction"));

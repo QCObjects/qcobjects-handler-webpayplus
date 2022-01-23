@@ -34,4 +34,6 @@
     const path = require("path");
     const absolutePath = path.resolve( __dirname, "./" );
     Import (absolutePath + "/api/backendroutes");
+    Package("qcobjects-handler-webpayplus/api/com.qcobjects.webpayplus.inittransaction", Package("com.qcobjects.webpayplus.inittransaction"));
+    Package("qcobjects-handler-webpayplus/api/com.qcobjects.webpayplus.result", Package("com.qcobjects.webpayplus.result"));
 })();
