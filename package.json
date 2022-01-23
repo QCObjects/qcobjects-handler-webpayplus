@@ -1,5 +1,5 @@
 {
-  "name": "qcobjects-webpayplus",
+  "name": "qcobjects-handler-webpayplus",
   "description": "QCObjects WebPayPlus Handler",
   "version": "0.0.3",
   "author": "Jean Machuca (correojean@gmail.com)",
