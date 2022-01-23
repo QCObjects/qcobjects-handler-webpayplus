@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "storeId": {
+      "type": "string"
+    },
+    "orderId": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string"
+    },
+    "editedFields": {
+      "type": "object",
+      "properties": {
+        "dni": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fullName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "council": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zip": {
+          "type": "string",
+          "minLength": 1
+        }
+
+      },
+      "required": [
+        "dni",
+        "fullName",
+        "address",
+        "city",
+        "council",
+        "state",
+        "zip"
+      ]
+    }
+  },
+  "required": [
+    "storeId",
+    "orderId",
+    "id"
+  ]
+}

@@ -1,0 +1,20 @@
+version: '3'
+services:
+  qcobjects:
+    image: quickcorp/qcobjects_app:latest
+    privileged: true
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - letsencrypt:/etc/letsencrypt/live
+    expose:
+      - "${PORT_HTTP}"
+      - "${PORT_HTTPS}"
+    ports:
+      - "${PORT_HTTP}:${PORT_HTTP}"
+      - "${PORT_HTTPS}:${PORT_HTTPS}"
+    env_file:
+      - env-file
+volumes:
+  letsencrypt:

@@ -1,0 +1,75 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - deploy
+
+stage-deploy:
+  stage: deploy
+  before_script:
+    - echo starting deployment
+    - |
+      echo -e "DOMAIN=$DOMAIN
+      PORT_HTTP=$PORT_HTTP
+      PORT_HTTPS=$PORT_HTTPS
+      CERTIFICATE_PROVIDER=$CERTIFICATE_PROVIDER
+      PRIVATE_KEY_PEM=$PRIVATE_KEY_PEM
+      PRIVATE_CERT_PEM=$PRIVATE_CERT_PEM
+      DEVMODE=$DEVMODE
+      GMAIL_USER=$GMAIL_USER
+      GMAIL_PASSWORD=$GMAIL_PASSWORD
+      GMAIL_FROM=$GMAIL_FROM
+      GMAIL_TO=$GMAIL_TO
+      GMAIL_SUBJECT=$GMAIL_SUBJECT
+      NEWSLETTER_SUBJECT_USER=$NEWSLETTER_SUBJECT_USER
+      NEWSLETTER_SUBJECT_BACKOFFICE=$NEWSLETTER_SUBJECT_BACKOFFICE
+      MAILCHIMP_API_KEY=$MAILCHIMP_API_KEY
+      MAILCHIMP_API_SERVER=$MAILCHIMP_API_SERVER
+      MAILCHIMP_API_LIST=$MAILCHIMP_API_LIST
+      MAILCHIMP_QCOBJECTSJOBS_APIKEY=$MAILCHIMP_QCOBJECTSJOBS_APIKEY
+      MAILCHIMP_QCOBJECTSJOBS_SERVER=$MAILCHIMP_QCOBJECTSJOBS_SERVER
+      MAILCHIMP_QCOBJECTSJOBS_LIST=$MAILCHIMP_QCOBJECTSJOBS_LIST
+      WEBPAY_COMMERCE_CODE=$WEBPAY_COMMERCE_CODE
+      WEBPAY_API_KEY=$WEBPAY_API_KEY
+      WEBPAY_ENVIRONMENT=$WEBPAY_ENVIRONMENT
+      WEBPAY_RETURN_URL=$WEBPAY_RETURN_URL
+      WEBPAY_RETURN_DOMAIN=$WEBPAY_RETURN_DOMAIN
+      COSMOSDB_ENDPOINT=$COSMOSDB_ENDPOINT
+      COSMOSDB_API_KEY=$COSMOSDB_API_KEY
+      COSMOSDB_DATABASE=$COSMOSDB_DATABASE
+      API_KEY=$API_KEY" > ./env-file
+    - docker info
+  only:
+    - main
+  script:
+    - npm ci
+    - npm i -D eslint-config-qcobjects
+    - npm test
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+    - sudo chown -R gitlab-runner:gitlab-runner public
+    - cp Dockerfile public/
+    - cp -f config-$DEVMODE.json ./config.json
+    - cp -f config-$DEVMODE.json public/config.json
+    - sudo cp -f config-$DEVMODE.json /etc/qcobjects/config.json
+    - echo setting up env $DEVMODE
+    - cp -f config-$DEVMODE.json public/config.json
+    - sudo cp -f config-$DEVMODE.json /etc/qcobjects/config.json
+    - sudo cp -f /etc/letsencrypt/live/$DOMAIN/privkey.pem ./privkey.pem
+    - sudo cp -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ./fullchain.pem
+    - sudo cp -f /etc/letsencrypt/live/$DOMAIN/privkey.pem public/privkey.pem
+    - sudo cp -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem public/fullchain.pem
+#    - sudo curl -L --fail https://github.com/docker/compose/releases/download/1.29.2/run.sh -o /usr/local/bin/docker-compose
+    - sudo chmod +x /usr/local/bin/docker-compose
+    - sudo docker image prune -f
+
+    - sudo docker-compose -f docker-compose.yml --env-file=./env-file build --no-cache --force-rm --pull -q qcobjects
+    - sudo docker-compose -f docker-compose.yml --env-file=./env-file up --quiet-pull -d qcobjects
+    - sudo chown -R gitlab-runner:gitlab-runner public
+    - rm -f ./env-file
+
+  artifacts:
+    paths:
+    - public

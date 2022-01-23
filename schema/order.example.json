@@ -1,0 +1,29 @@
+{
+  "url": "https://example.com/order/1234567",
+  "storeId": "bmRsmFhmqampsZGpw0",
+  "orderId": 1234567,
+  "dni": "11111111-1",
+  "email": "a@b.com",
+  "fullName": "Jon Doe",
+  "address": "One St 22",
+  "city": "New York",
+  "council": "NY City Council",
+  "state": "NY",
+  "zip": 999,
+  "products": [
+    {
+      "sku": "00AB",
+      "name": "Shirt Size M",
+      "quantity": 2,
+      "price": 3500,
+      "url": "https://example.com/product/1"
+    },
+    {
+      "sku": "002B",
+      "name": "Big Hat",
+      "quantity": 1,
+      "price": 2000,
+      "url": "https://example.com/product/2"
+    }
+  ]
+}
